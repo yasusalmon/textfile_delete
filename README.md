@@ -1,1 +1,1 @@
-# textfile_delete
+textfileの任意のStringを削除したい
