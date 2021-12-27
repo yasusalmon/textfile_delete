@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import java.util.*;
 
 class delete extends JFrame implements ActionListener{
   public static void main(String args[]){
@@ -43,10 +44,14 @@ class delete extends JFrame implements ActionListener{
       BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file),"UTF-8"));
       String[] data = new String[10000];
       int data_line = 0;
+
+      Scanner sc = new Scanner(System.in);
+      System.out.println("which line do you choise?");
+      int sc_where = sc.nextInt();
       //data read and set and output
       while((data[data_line] = br.readLine()) != null){
         System.out.println(data[data_line]);
-        if(data_line < 8){
+        if(data_line == sc_where - 1){
           text[data_line] = new JLabel(data[data_line]);
           text[data_line].setFont(new Font( "‚l‚r ƒSƒVƒbƒN" , Font.BOLD, 15));
           button[data_line] = new JButton("Finish");
