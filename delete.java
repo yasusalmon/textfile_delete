@@ -1,3 +1,4 @@
+import java.util.*;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
@@ -16,13 +17,17 @@ import java.io.InputStreamReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import java.util.*;
-
 class delete extends JFrame implements ActionListener{
   public static void main(String args[]){
     delete frame = new delete("delete");
     frame.setVisible(true);
   }
+
+  String[] data = new String[10000];
+  String[] data_split = new String[10000];
+  JButton[] button = new JButton[8];
+  JLabel[] text = new JLabel[10000];
+  int sc_where = 0;
 
   delete(String title){
     setTitle(title);
@@ -35,43 +40,66 @@ class delete extends JFrame implements ActionListener{
     contentPane.add(p,BorderLayout.CENTER);
 
     try{
-
-      JButton[] button = new JButton[8];
-      JLabel[] text = new JLabel[10000];
-
-
       File file = new File("input.txt");
       BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file),"UTF-8"));
-      String[] data = new String[10000];
       int data_line = 0;
-
-      Scanner sc = new Scanner(System.in);
-      System.out.println("which line do you choise?");
-      int sc_where = sc.nextInt();
       //data read and set and output
       while((data[data_line] = br.readLine()) != null){
         System.out.println(data[data_line]);
-        if(data_line == sc_where - 1){
-          text[data_line] = new JLabel(data[data_line]);
-          text[data_line].setFont(new Font( "ÇlÇr ÉSÉVÉbÉN" , Font.BOLD, 15));
-          button[data_line] = new JButton("Finish");
-          p.add(text[data_line]);
-          p.add(button[data_line]);
-        }
         data_line++;
       }
+      br.close();
+
+      Scanner sc = new Scanner(System.in);
+      System.out.println("which line do you choise?");
+      sc_where = sc.nextInt() -1;
+
+
+      if(data[sc_where] != null){
+        System.out.println("OK!");
+        String[] list = data[sc_where].split(",");
+        int text_n = 0;
+        for(String list_text:list){
+          System.out.println(list_text);
+          data_split[text_n] = list_text;
+          text[text_n] = new JLabel(list_text);
+          text[text_n].setFont(new Font( "ÇlÇr ÉSÉVÉbÉN" , Font.BOLD, 15));
+          button[text_n] = new JButton("Finished");
+          button[text_n].addActionListener(this);//kore daiji wasuretete komatta
+          p.add(text[text_n]);
+          p.add(button[text_n]);
+          text_n++;
+        }
+      }else{
+        System.out.println("there is no content.");
+        System.exit(0);
+      }
+
       //data_line output
       System.out.println(data_line);
-      br.close();
+
     }catch(IOException e){
       System.out.println("no file");
-      return;
+      System.exit(0);
     }
-
-
   }
 
   public void actionPerformed(ActionEvent e){
     System.out.println("u");
+    for(int i = 0;i<8;i++){
+      if(e.getSource() == button[i]){
+        System.out.println(data[sc_where]);
+        System.out.println("unti");
+        System.out.println(data_split[i]);
+        String delete_content = "";
+        if(i != 0)delete_content +=",";
+        delete_content += data_split[i];
+        if(i == 0)delete_content += ",";
+        System.out.println(delete_content);
+        data[sc_where] = data[sc_where].replace(delete_content,"");
+        System.out.println(data[sc_where]);
+        break;
+      }
+    }
   }
 }
