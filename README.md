@@ -1,1 +1,1 @@
-textfileの任意のStringを削除したい
+textfileの任意のStringを削除するやつ
